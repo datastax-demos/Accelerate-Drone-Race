@@ -362,7 +362,7 @@ def main():
             buttons = JoystickPS4ALT
         elif js_name in ('PLAYSTATION(R)3 Controller', 'Sony PLAYSTATION(R)3 Controller'):
             buttons = JoystickPS3
-        elif js_name == 'Controller (Xbox One For Windows)': #'Xbox One Wired Controller'
+        elif js_name == 'Xbox One Wired Controller': #'Xbox One Wired Controller'
             buttons = JoystickXONE
         elif js_name == 'FrSky Taranis Joystick':
             buttons = JoystickTARANIS

@@ -24,9 +24,11 @@ Original project by Hanyazou <hanyazou@gmail>
 ## How to install
 You can install stable version from PyPI.
 
-You can use PS3/PS4/XONE/KB joystick to controll Tello.
+Any Xbox One controller (possibly 360) should work here
 
 ```
+Install this xbox360 mac driver: https://github.com/360Controller/360Controller/releases/download/v0.16.11/360ControllerInstall_0.16.11.dmg
+$ brew install ffmpeg pkg-config
 $ pip install tellopy
 $ pip install av
 $ pip install opencv-python
