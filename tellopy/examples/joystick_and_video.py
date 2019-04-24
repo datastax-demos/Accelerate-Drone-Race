@@ -8,6 +8,8 @@ tellopy sample using joystick and video palyer
 """
 
 import time
+import datetime
+import os
 import sys
 import tellopy
 import pygame
@@ -181,6 +183,9 @@ run_recv_thread = True
 new_image = None
 flight_data = None
 log_data = None
+file_event_log = None
+file_flight_log = None
+write_header = True
 buttons = None
 speed = 100
 throttle = 0.0
@@ -192,16 +197,37 @@ def handler(event, sender, data, **args):
     global prev_flight_data
     global flight_data
     global log_data
+    global file_event_log
+    global write_header
     drone = sender
     if event is drone.EVENT_FLIGHT_DATA:
         if prev_flight_data != str(data):
             print(data)
             prev_flight_data = str(data)
         flight_data = data
+        if file_flight_log == None:
+            path = '%s/Desktop/flight-log-%s.txt' % (
+                os.getenv('HOME'),
+                datetime.datetime.now().strftime('%Y-%m-%d'))
+            file = open(path, 'a')
+        if write_header:
+            file.write('%s\n' % data)
+            write_header = False
+        file.write('%s\n' % data)
     elif event is drone.EVENT_LOG_DATA:
         log_data = data
+        if file_event_log == None:
+            path = '%s/Desktop/event-log-%s.csv' % (
+                os.getenv('HOME'),
+                datetime.datetime.now().strftime('%Y-%m-%d'))
+            file = open(path, 'a')
+        if write_header:
+            file.write('%s\n' % data.format_cvs_header())
+            write_header = False
+        file.write('%s\n' % data.format_cvs())
     else:
         print('event="%s" data=%s' % (event.getname(), str(data)))
+
 
 
 def update(old, new, max_delta=0.3):
@@ -383,6 +409,9 @@ def main():
         while 1:
             # loop with pygame.event.get() is too much tight w/o some sleep
             time.sleep(0.01)
+            # with open('drone_log.txt', 'a') as drone_log:
+            #     drone_log.write(str(prev_flight_data) + '\n')
+            #     drone_log.close()
             for e in pygame.event.get():
                 handle_input_event(drone, e)
             if current_image is not new_image:
