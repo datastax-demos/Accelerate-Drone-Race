@@ -212,9 +212,9 @@ def handler(event, sender, data, **args):
             path = '%s/Desktop/flight-log-%s.json' % (
                 os.getenv('HOME'),
                 datetime.datetime.now().strftime('%Y-%m-%d'))
-            file = open(path, 'w')
+            file = open(path, 'a+')
 
-        file.write(str(json_to_file))
+        file.write("%s\n" % str(json_to_file))
     elif event is drone.EVENT_LOG_DATA:
         log_data = data
     else:
