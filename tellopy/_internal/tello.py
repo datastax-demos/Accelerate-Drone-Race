@@ -665,7 +665,7 @@ class Tello(object):
 
             try:
                 data, server = sock.recvfrom(self.udpsize)
-                log.debug("recv: %s" % byte_to_hexstring(data))
+                log.debug("recv: %s" % str(byte_to_hexstring(data)))
                 self.__process_packet(data)
             except socket.timeout as ex:
                 if self.state == self.STATE_CONNECTED:

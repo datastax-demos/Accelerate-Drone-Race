@@ -195,37 +195,15 @@ class FlightData(object):
         global event_count
         event_count=event_count+1
         return (
-            (" EventID: %d" % event_count) +
-            (" \n ALT: %2d" % self.height) +
-            (" \n SPD: %2d" % self.ground_speed) +
-            (" \n FLYTIME: %2d" % self.fly_time) +
-            (" \n IMUSTATE: %2d" % self.imu_state) +
-            (" \n PRESSURE: %2d" % self.pressure_state) +
-            (" \n PWRSTATE: %2d" % self.power_state) +
-            (" \n BATSTATE: %2d" % self.battery_state) +
-            (" \n GRAVSTATE: %2d" % self.gravity_state) +
-            (" \n WINDSTATE: %2d" % self.wind_state) +
-            (" \n BAT: %2d" % self.battery_percentage) +
-            (" \n BATLEFT: %2d" % self.drone_battery_left) +
-            (" \n FLYTLEFT: %2d" % self.drone_fly_time_left) +
-            (" \n EMSKY: %2d" % self.em_sky) +
-            (" \n EMGROUND: %2d" % self.em_ground) +
-            (" \n EMOPEN: %2d" % self.em_open) +
-            (" \n DHOVER: %2d" % self.drone_hover) +
-            (" \n OUTAGEREC: %2d" % self.outage_recording) +
-            (" \n FACTORYMODE: %2d" % self.factory_mode) +
-            (" \n FLYMODE: %2d" % self.fly_mode) +
-            (" \n CAMSTATE: %2d" % self.camera_state) +
-            (" \n EMSTATE: %2d" % self.electrical_machinery_state) +
-            (" \n TEMPHEIGHT: %2d" % self.temperature_height) +
-            #("ALT: %2d" % self.height) +
-            #(" | SPD: %2d" % self.ground_speed) +
-            #(" | BAT: %2d" % self.battery_percentage) +
-            #(" | WIFI: %2d" % self.wifi_strength) +
-            #(" | CAM: %2d" % self.camera_state) +
-            #(" | MODE: %2d" % self.fly_mode) +
-            # (", drone_battery_left=0x%04x" % self.drone_battery_left) +
-            "")
+        ('{"EventID": %d, ' % event_count) +
+        ('"TEMPHEIGHT":%2d, ' % self.temperature_height) +
+        ('"ALT":%2d, ' % self.height) +
+        ('"SPD":%2d, ' % self.ground_speed) +
+        ('"BAT":%2d, ' % self.battery_percentage) +
+        ('"WIFI":%2d, ' % self.wifi_strength) +
+        ('"CAM":%2d, ' % self.camera_state) +
+        ('"MODE":%2d}' % self.fly_mode) +
+        '')
 
 class DownloadedFile(object):
     def __init__(self, filenum, size):

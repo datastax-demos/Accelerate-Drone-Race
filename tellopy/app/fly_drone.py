@@ -21,6 +21,7 @@ import cv2.cv2 as cv2  # for avoidance of pylint error
 import numpy
 import time
 import traceback
+import json
 
 
 class JoystickPS3:
@@ -204,27 +205,18 @@ def handler(event, sender, data, **args):
         if prev_flight_data != str(data):
             print(data)
             prev_flight_data = str(data)
-        flight_data = data
+        flight_data = str(data)
+        flight_to_json = json.loads(flight_data)
+        json_to_file = json.dumps(flight_to_json)
         if file_flight_log == None:
-            path = '%s/Desktop/flight-log-%s.txt' % (
+            path = '%s/Desktop/flight-log-%s.json' % (
                 os.getenv('HOME'),
                 datetime.datetime.now().strftime('%Y-%m-%d'))
-            file = open(path, 'a')
-        if write_header:
-            file.write('%s\n' % data)
-            write_header = False
-        file.write('%s\n' % data)
+            file = open(path, 'w')
+
+        file.write(str(json_to_file))
     elif event is drone.EVENT_LOG_DATA:
         log_data = data
-        if file_event_log == None:
-            path = '%s/Desktop/event-log-%s.csv' % (
-                os.getenv('HOME'),
-                datetime.datetime.now().strftime('%Y-%m-%d'))
-            file = open(path, 'a')
-        if write_header:
-            file.write('%s\n' % data.format_cvs_header())
-            write_header = False
-        file.write('%s\n' % data.format_cvs())
     else:
         print('event="%s" data=%s' % (event.getname(), str(data)))
 

@@ -2,6 +2,7 @@ from time import sleep
 import tellopy
 import datetime
 import os
+import json
 
 file = None
 write_header = True
