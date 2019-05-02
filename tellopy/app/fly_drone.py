@@ -219,21 +219,24 @@ def handler(event, sender, data, **args):
         file.write("%s\n" % str(json_to_file))
     elif event is drone.EVENT_LOG_DATA:
         log_data = data
+        log_to_json = json.loads(data.format_json())
+        json_to_file = json.dumps(log_to_json)
+
         path = '%s/Desktop/pos-log-%s.json' % (
             os.getenv('HOME'),
             datetime.datetime.now().strftime('%Y-%m-%d'))
         file = open(path, 'a+')
 
-        make_csv = io.StringIO('{0}\n{1}'.format(data.format_cvs_header(), data.format_cvs()))
+        #make_csv = io.StringIO('{0}\n{1}'.format(data.format_cvs_header(), data.format_cvs()))
+        #make_csv2 = '%s\n%f'.format(data.format_cvs_header(), data.format_cvs())
 
-
-        log_csv_format = csv.DictReader(make_csv)
-        log_json_format = json.dumps(list(log_csv_format))
+        #log_csv_format = csv.DictReader(make_csv)
+        #log_json_format = json.dumps(list(log_csv_format))
 
         # if write_header:
         #     file.write('%s\n' % data.format_cvs_header())
         #     write_header = False
-        file.write('%s\n' % log_json_format)
+        file.write('%s\n' % str(json_to_file))
     else:
         print('event="%s" data=%s' % (event.getname(), str(data)))
 

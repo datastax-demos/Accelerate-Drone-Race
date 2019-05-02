@@ -291,6 +291,12 @@ class LogData(object):
             ',' + self.imu.format_cvs_header() +
             "")
 
+    def format_json(self):
+        return(
+            self.mvo.format_json() +
+            self.imu.format_json() +
+            '')
+
     def update(self, data):
         if isinstance(data, bytearray):
             data = str(data)
@@ -358,6 +364,15 @@ class LogNewMvoFeedback(object):
             "mvo.vel_x,mvo.vel_y,mvo.vel_z" + 
             ",mvo.pos_x,mvo.pos_y,mvo.pos_z" +
             "")
+    def format_json(self):
+        return (
+                ('{"imu.vel_x": %f, ' % self.vel_x) +
+                ('"imu.vel_y": %f, ' % self.vel_y) +
+                ('"imu.vel_z": %f, ' % self.vel_z) +
+                ('"imu.pos_x": %f, ' % self.pos_x) +
+                ('"imu.pos_x": %f, ' % self.pos_y) +
+                ('"imu.pos_x": %f, ' % self.pos_z) +
+                '')
 
     def update(self, data, count = 0):
         self.log.debug('LogNewMvoFeedback: length=%d %s' % (len(data), byte_to_hexstring(data)))
@@ -405,6 +420,23 @@ class LogImuAtti(object):
             (",%f,%f,%f,%f" % (self.q0, self.q1, self.q2, self.q3)) +
             (",%f,%f,%f" % (self.vg_x, self.vg_y, self.vg_z)) +
             "")
+
+    def format_json(self):
+        return (
+                ('"imu.acc_x": %f, ' % self.acc_x) +
+                ('"imu.acc_y": %f, ' % self.acc_y) +
+                ('"imu.acc_z": %f, ' % self.acc_z) +
+                ('"imu.gyro_x": %f, ' % self.gyro_x) +
+                ('"imu.gyro_y": %f, ' % self.gyro_y) +
+                ('"imu.gyro_z": %f, ' % self.gyro_z) +
+                ('"imu.q0": %f, ' % self.q0) +
+                ('"imu.q1": %f, ' % self.q1) +
+                ('"imu.q2": %f, ' % self.q2) +
+                ('"imu.q3": %f, ' % self.q3) +
+                ('"imu.vg_x": %f, ' % self.vg_x) +
+                ('"imu.vg_y": %f, ' % self.vg_y) +
+                ('"imu.vg_z": %f} ' % self.vg_z) +
+                '')
 
     def format_cvs_header(self):
         return (
