@@ -215,8 +215,7 @@ def handler(event, sender, data, **args):
     global file_event_log_csv
     global write_header
     global curl_headers
-    conn = http.client.HTTPConnection("localhost", 8080)
-    #conn_pos = http.client.HTTPConnection("http://localhost:8080/sebulba/position")
+    #conn = http.client.HTTPConnection("localhost", 8080)
     drone = sender
     if event is drone.EVENT_FLIGHT_DATA:
         if prev_flight_data != str(data):
@@ -226,20 +225,14 @@ def handler(event, sender, data, **args):
         flight_data = str(data)
         flight_to_json = json.loads(flight_data)
         json_to_file = json.dumps(flight_to_json)
-        #conn.request("POST", "sebulba/event", json_to_file, curl_headers)
+
+        response = requests.post('http://localhost:8080/sebulba/event', headers=curl_headers, data=json_to_file)
 
         try:
-            conn.request("POST", "/sebulba/event", json_to_file, curl_headers)
-
+            response.raise_for_status()
+            #print(response.status_code, response.reason)
         except requests.exceptions.HTTPError as e:
             return "Event Error: " + str(e)
-
-        # response = requests.post('http://localhost:8080/sebulba/event', headers=headers, data=flight_to_json)
-        #
-        # try:
-        #     response.raise_for_status()
-        # except requests.exceptions.HTTPError as e:
-        #     return "Event Error: " + e
 
 
         if file_flight_log is None:
@@ -251,12 +244,12 @@ def handler(event, sender, data, **args):
         log_to_json = json.loads(data.format_json())
         json_to_file = json.dumps(log_to_json)
 
-        #response = requests.post('http://localhost:8080/sebulba/position', headers=curl_headers, data=json_to_file)
-        #
-        # try:
-        #     response.raise_for_status()
-        # except requests.exceptions.HTTPError as e:
-        #     return "POS Error: " + e
+        response = requests.post('http://localhost:8080/sebulba/position', headers=curl_headers, data=json_to_file)
+
+        try:
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as e:
+            return "POS Error: " + str(e)
 
         if file_event_log is None:
             path = '{0}/Desktop/pos-log-{1}.json'.format(os.getenv('HOME'), log_time_string)
