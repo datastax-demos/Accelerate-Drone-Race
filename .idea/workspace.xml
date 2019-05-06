@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f967a76b-9ad1-4084-8c39-8df672fc534b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tellopy/_internal/protocol.py" beforeDir="false" afterPath="$PROJECT_DIR$/tellopy/_internal/protocol.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tellopy/app/fly_drone.py" beforeDir="false" afterPath="$PROJECT_DIR$/tellopy/app/fly_drone.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,34 +19,38 @@
           <entry key="project.open.time.11" value="1" />
           <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.3" value="1" />
+          <entry key="project.open.time.6" value="1" />
           <entry key="project.open.time.8" value="1" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="5" />
+          <entry key="project.opened" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="26" />
-          <entry key="md" value="96" />
-          <entry key="py" value="1319" />
+          <entry key="md" value="99" />
+          <entry key="py" value="1403" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Markdown" value="96" />
+          <entry key="Markdown" value="99" />
           <entry key="PLAIN_TEXT" value="26" />
-          <entry key="Python" value="1319" />
+          <entry key="Python" value="1403" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
+          <entry key="cfg" value="1" />
+          <entry key="md" value="1" />
           <entry key="py" value="11" />
           <entry key="txt" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="PLAIN_TEXT" value="6" />
+          <entry key="Markdown" value="1" />
+          <entry key="PLAIN_TEXT" value="7" />
           <entry key="Python" value="11" />
         </counts>
       </usages-collector>
@@ -67,15 +70,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tellopy/app/fly_drone.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="92">
-              <caret line="220" column="23" lean-forward="true" selection-start-line="220" selection-start-column="23" selection-end-line="220" selection-end-column="23" />
+            <state relative-caret-position="457">
+              <caret line="242" column="65" selection-start-line="242" selection-start-column="65" selection-end-line="242" selection-end-column="65" />
               <folding>
                 <element signature="e#335#346#0" expanded="true" />
-                <element signature="e#592#1120#0" />
-                <element signature="e#1146#1673#0" />
-                <element signature="e#1702#2229#0" />
-                <element signature="e#2256#2762#0" />
-                <element signature="e#2792#3300#0" />
               </folding>
             </state>
           </provider>
@@ -84,8 +82,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tellopy/examples/record_log.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="185">
-              <caret line="22" column="46" lean-forward="true" selection-start-line="15" selection-start-column="12" selection-end-line="22" selection-end-column="46" />
+            <state relative-caret-position="270">
+              <caret line="22" column="46" selection-start-line="15" selection-start-column="12" selection-end-line="22" selection-end-column="46" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
@@ -101,7 +99,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tellopy/_internal/protocol.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-846">
+            <state relative-caret-position="4380">
               <caret line="297" column="12" selection-start-line="297" selection-start-column="12" selection-end-line="297" selection-end-column="12" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
@@ -114,8 +112,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tellopy/_internal/tello.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1777">
-              <caret line="671" column="46" lean-forward="true" selection-start-line="671" selection-start-column="46" selection-end-line="671" selection-end-column="46" />
+            <state relative-caret-position="9825">
+              <caret line="671" column="46" selection-start-line="671" selection-start-column="46" selection-end-line="671" selection-end-column="46" />
               <folding>
                 <element signature="e#0#16#0" expanded="true" />
               </folding>
@@ -147,13 +145,13 @@
       <list>
         <option value="$PROJECT_DIR$/tellopy/_internal/dse-service.py" />
         <option value="$PROJECT_DIR$/tellopy/examples/controller_check.py" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/tellopy/examples/drone_log.txt" />
         <option value="$PROJECT_DIR$/tellopy/_internal/tello.py" />
         <option value="$PROJECT_DIR$/tellopy/examples/record_log.py" />
         <option value="$PROJECT_DIR$/tellopy/examples/joystick_and_video.py" />
-        <option value="$PROJECT_DIR$/tellopy/app/fly_drone.py" />
         <option value="$PROJECT_DIR$/tellopy/_internal/protocol.py" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/tellopy/app/fly_drone.py" />
       </list>
     </option>
   </component>
@@ -167,7 +165,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -207,6 +204,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -322,8 +320,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="984" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13381556" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13381556" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -357,16 +356,6 @@
     <entry file="file://$PROJECT_DIR$/tellopy/_internal/event.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="355">
-            <caret line="34" column="19" lean-forward="true" selection-start-line="34" selection-start-column="19" selection-end-line="34" selection-end-column="19" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tellopy/examples/drone_log.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1604" />
@@ -374,20 +363,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/tellopy/_internal/video_stream.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-24">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state relative-caret-position="-24" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tellopy/_internal/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/tellopy/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tellopy/app/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/tellopy/_internal/dse-service.py">
@@ -399,17 +381,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/tellopy/examples/record_log.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="22" column="46" lean-forward="true" selection-start-line="15" selection-start-column="12" selection-end-line="22" selection-end-column="46" />
+        <state relative-caret-position="270">
+          <caret line="22" column="46" selection-start-line="15" selection-start-column="12" selection-end-line="22" selection-end-column="46" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/tellopy/app/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/tellopy/_internal/protocol.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-846">
+        <state relative-caret-position="4380">
           <caret line="297" column="12" selection-start-line="297" selection-start-column="12" selection-end-line="297" selection-end-column="12" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
@@ -420,25 +405,33 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/tellopy/_internal/tello.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1777">
-          <caret line="671" column="46" lean-forward="true" selection-start-line="671" selection-start-column="46" selection-end-line="671" selection-end-column="46" />
+        <state relative-caret-position="9825">
+          <caret line="671" column="46" selection-start-line="671" selection-start-column="46" selection-end-line="671" selection-end-column="46" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/setup.cfg">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="385">
+            <caret line="36" column="22" selection-start-line="36" selection-start-column="22" selection-end-line="36" selection-end-column="22" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/tellopy/app/fly_drone.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="220" column="23" lean-forward="true" selection-start-line="220" selection-start-column="23" selection-end-line="220" selection-end-column="23" />
+        <state relative-caret-position="457">
+          <caret line="242" column="65" selection-start-line="242" selection-start-column="65" selection-end-line="242" selection-end-column="65" />
           <folding>
             <element signature="e#335#346#0" expanded="true" />
-            <element signature="e#592#1120#0" />
-            <element signature="e#1146#1673#0" />
-            <element signature="e#1702#2229#0" />
-            <element signature="e#2256#2762#0" />
-            <element signature="e#2792#3300#0" />
           </folding>
         </state>
       </provider>

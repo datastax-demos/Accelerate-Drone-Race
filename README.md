@@ -34,6 +34,7 @@ $ pip install av
 $ pip install opencv-python
 $ pip install image
 $ pip install pygame
+$ pip install requests
 
 ```
 

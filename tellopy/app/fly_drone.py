@@ -24,6 +24,7 @@ import traceback
 import json
 import io
 import csv
+import requests
 
 class JoystickPS3:
     # d-pad
@@ -196,6 +197,10 @@ yaw = 0.0
 pitch = 0.0
 roll = 0.0
 log_time_string = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+curl_headers = {
+    'accept': 'application/json',
+    'Content-Type': 'application/json',
+}
 
 
 def handler(event, sender, data, **args):
@@ -206,6 +211,7 @@ def handler(event, sender, data, **args):
     global file_flight_log
     global file_event_log_csv
     global write_header
+    global curl_headers
     drone = sender
     if event is drone.EVENT_FLIGHT_DATA:
         if prev_flight_data != str(data):
@@ -216,6 +222,14 @@ def handler(event, sender, data, **args):
         flight_to_json = json.loads(flight_data)
         json_to_file = json.dumps(flight_to_json)
 
+        #response = requests.post('http://localhost:8080/sebulba/event', headers=headers, data=flight_to_json)
+
+        try:
+            requests.post('http://localhost:8080/sebulba/event', headers=curl_headers, data=json_to_file)
+        except requests.exceptions.RequestException as e:
+            print(e)
+
+
         if file_flight_log is None:
             path = '{0}/Desktop/flight-log-{1}.json'.format(os.getenv('HOME'), log_time_string)
             file_flight_log = open(path, 'a+')
@@ -224,6 +238,11 @@ def handler(event, sender, data, **args):
         log_data = data
         log_to_json = json.loads(data.format_json())
         json_to_file = json.dumps(log_to_json)
+
+        try:
+            requests.post('http://localhost:8080/sebulba/position', headers=curl_headers, data=json_to_file)
+        except requests.exceptions.RequestException as e:
+            print(e)
 
         if file_event_log is None:
             path = '{0}/Desktop/pos-log-{1}.json'.format(os.getenv('HOME'), log_time_string)
