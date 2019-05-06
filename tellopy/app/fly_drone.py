@@ -25,6 +25,8 @@ import json
 import io
 import csv
 import requests
+import http.client
+import urllib.parse
 
 class JoystickPS3:
     # d-pad
@@ -190,7 +192,8 @@ file_event_log = None
 file_flight_log = None
 file_event_log_csv = None
 write_header = True
-buttons = None
+buttons = JoystickPS4
+#buttons = None
 speed = 100
 throttle = 0.0
 yaw = 0.0
@@ -212,6 +215,8 @@ def handler(event, sender, data, **args):
     global file_event_log_csv
     global write_header
     global curl_headers
+    conn = http.client.HTTPConnection("localhost", 8080)
+    #conn_pos = http.client.HTTPConnection("http://localhost:8080/sebulba/position")
     drone = sender
     if event is drone.EVENT_FLIGHT_DATA:
         if prev_flight_data != str(data):
@@ -221,13 +226,20 @@ def handler(event, sender, data, **args):
         flight_data = str(data)
         flight_to_json = json.loads(flight_data)
         json_to_file = json.dumps(flight_to_json)
-
-        #response = requests.post('http://localhost:8080/sebulba/event', headers=headers, data=flight_to_json)
+        #conn.request("POST", "sebulba/event", json_to_file, curl_headers)
 
         try:
-            requests.post('http://localhost:8080/sebulba/event', headers=curl_headers, data=json_to_file)
-        except requests.exceptions.RequestException as e:
-            print(e)
+            conn.request("POST", "/sebulba/event", json_to_file, curl_headers)
+
+        except requests.exceptions.HTTPError as e:
+            return "Event Error: " + str(e)
+
+        # response = requests.post('http://localhost:8080/sebulba/event', headers=headers, data=flight_to_json)
+        #
+        # try:
+        #     response.raise_for_status()
+        # except requests.exceptions.HTTPError as e:
+        #     return "Event Error: " + e
 
 
         if file_flight_log is None:
@@ -239,10 +251,12 @@ def handler(event, sender, data, **args):
         log_to_json = json.loads(data.format_json())
         json_to_file = json.dumps(log_to_json)
 
-        try:
-            requests.post('http://localhost:8080/sebulba/position', headers=curl_headers, data=json_to_file)
-        except requests.exceptions.RequestException as e:
-            print(e)
+        #response = requests.post('http://localhost:8080/sebulba/position', headers=curl_headers, data=json_to_file)
+        #
+        # try:
+        #     response.raise_for_status()
+        # except requests.exceptions.HTTPError as e:
+        #     return "POS Error: " + e
 
         if file_event_log is None:
             path = '{0}/Desktop/pos-log-{1}.json'.format(os.getenv('HOME'), log_time_string)
