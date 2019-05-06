@@ -187,6 +187,7 @@ flight_data = None
 log_data = None
 file_event_log = None
 file_flight_log = None
+file_event_log_csv = None
 write_header = True
 buttons = None
 speed = 100
@@ -194,51 +195,53 @@ throttle = 0.0
 yaw = 0.0
 pitch = 0.0
 roll = 0.0
+log_time_string = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+
 
 def handler(event, sender, data, **args):
     global prev_flight_data
     global flight_data
     global log_data
     global file_event_log
+    global file_flight_log
+    global file_event_log_csv
     global write_header
     drone = sender
     if event is drone.EVENT_FLIGHT_DATA:
         if prev_flight_data != str(data):
-            print(data)
+            #print(data)
             prev_flight_data = str(data)
 
         flight_data = str(data)
         flight_to_json = json.loads(flight_data)
         json_to_file = json.dumps(flight_to_json)
 
-        if file_flight_log == None:
-            path = '%s/Desktop/flight-log-%s.json' % (
-                os.getenv('HOME'),
-                datetime.datetime.now().strftime('%Y-%m-%d'))
-            file = open(path, 'a+')
-        file.write("%s\n" % str(json_to_file))
+        if file_flight_log is None:
+            path = '{0}/Desktop/flight-log-{1}.json'.format(os.getenv('HOME'), log_time_string)
+            file_flight_log = open(path, 'a+')
+        file_flight_log.write("{0}\n".format(str(json_to_file)))
     elif event is drone.EVENT_LOG_DATA:
         log_data = data
         log_to_json = json.loads(data.format_json())
         json_to_file = json.dumps(log_to_json)
 
-        path = '%s/Desktop/pos-log-%s.json' % (
-            os.getenv('HOME'),
-            datetime.datetime.now().strftime('%Y-%m-%d'))
-        file = open(path, 'a+')
+        if file_event_log is None:
+            path = '{0}/Desktop/pos-log-{1}.json'.format(os.getenv('HOME'), log_time_string)
+            file_event_log = open(path, 'a+')
 
-        #make_csv = io.StringIO('{0}\n{1}'.format(data.format_cvs_header(), data.format_cvs()))
-        #make_csv2 = '%s\n%f'.format(data.format_cvs_header(), data.format_cvs())
+        file_event_log.write("{0}\n".format(str(json_to_file)))
 
-        #log_csv_format = csv.DictReader(make_csv)
-        #log_json_format = json.dumps(list(log_csv_format))
+        if file_event_log_csv is None:
+            path = '{0}/Desktop/pos-log-{1}.csv'.format(os.getenv('HOME'), log_time_string)
+            file_event_log_csv = open(path, 'a+')
 
-        # if write_header:
-        #     file.write('%s\n' % data.format_cvs_header())
-        #     write_header = False
-        file.write('%s\n' % str(json_to_file))
+        if write_header:
+            file_event_log_csv.write('{0}\n'.format(data.format_cvs_header()))
+            write_header = False
+        file_event_log_csv.write('{0}\n'.format(str(data.format_cvs())))
+
     else:
-        print('event="%s" data=%s' % (event.getname(), str(data)))
+        print('event="{0}" data={1}'.format(event.getname(), str(data)))
 
 
 
@@ -421,9 +424,6 @@ def main():
         while 1:
             # loop with pygame.event.get() is too much tight w/o some sleep
             time.sleep(0.01)
-            # with open('drone_log.txt', 'a') as drone_log:
-            #     drone_log.write(str(prev_flight_data) + '\n')
-            #     drone_log.close()
             for e in pygame.event.get():
                 handle_input_event(drone, e)
             if current_image is not new_image:

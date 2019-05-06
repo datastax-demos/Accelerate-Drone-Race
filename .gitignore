@@ -1,2 +1,10 @@
+<<<<<<< HEAD
 
 .idea/workspace.xml
+=======
+# User-specific stuff
+.idea
+
+# File-based project format
+*.iws
+>>>>>>> 3b908df09bd07df12c0523d438077fdc37cae6e9
