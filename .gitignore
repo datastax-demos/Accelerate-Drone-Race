@@ -5,3 +5,5 @@
 
 # File-based project format
 *.iws
+
+*.py[co]
