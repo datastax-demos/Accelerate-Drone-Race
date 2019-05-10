@@ -261,7 +261,7 @@ def handler(event, sender, data, **args):
         log_to_json = json.loads(data.format_json())
         json_to_file = json.dumps(log_to_json)
 
-        #asyncio.run(post_data(json=json_to_file))
+        asyncio.run(post_data(json=json_to_file))
 
         # if file_event_log is None:
         #     path = '{0}/Desktop/pos-log-{1}.json'.format(os.getenv('HOME'), log_time_string)
