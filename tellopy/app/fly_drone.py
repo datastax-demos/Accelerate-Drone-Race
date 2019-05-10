@@ -24,9 +24,10 @@ import traceback
 import json
 import io
 import csv
-import requests
-import http.client
-import urllib.parse
+#import requests
+import requests_async as requests
+import asyncio
+#import aiohttp
 
 class JoystickPS3:
     # d-pad
@@ -192,8 +193,9 @@ file_event_log = None
 file_flight_log = None
 file_event_log_csv = None
 write_header = True
-buttons = JoystickPS4
-#buttons = None
+post_url = None
+#buttons = JoystickPS4
+buttons = None
 speed = 100
 throttle = 0.0
 yaw = 0.0
@@ -205,6 +207,25 @@ curl_headers = {
     'Content-Type': 'application/json',
 }
 
+# httpsession = aiohttp.ClientSession()
+# loop = asyncio.get_event_loop()
+
+async def post_data(json_data):
+
+   # resp = await httpsession.put(post_url, json=json_data)
+   # try:
+   #     resp.raise_for_status()
+   # except aiohttp.ClientError as e:
+   #     return "Exception: " + str(e)
+
+    #response = await requests.post(post_url, headers=curl_headers, data=json_data, timeout=.01)
+   await requests.post(post_url, headers=curl_headers, data=json_data, timeout=.01)
+    # try:
+    #     response.status_code
+    # # print(response.status_code, response.reason)
+    # except requests.exceptions.HTTPError as e:
+    #     return "Error: " + str(e)
+
 
 def handler(event, sender, data, **args):
     global prev_flight_data
@@ -215,47 +236,38 @@ def handler(event, sender, data, **args):
     global file_event_log_csv
     global write_header
     global curl_headers
-    #conn = http.client.HTTPConnection("localhost", 8080)
+    global post_url
+
     drone = sender
     if event is drone.EVENT_FLIGHT_DATA:
         if prev_flight_data != str(data):
             #print(data)
             prev_flight_data = str(data)
-
+        post_url = 'http://localhost:8080/sebulba/event'
         flight_data = str(data)
         flight_to_json = json.loads(flight_data)
         json_to_file = json.dumps(flight_to_json)
 
-        response = requests.post('http://localhost:8080/sebulba/event', headers=curl_headers, data=json_to_file)
+        #post_data(json_data=json_to_file)
+        asyncio.run(post_data(json_data=json_to_file))
 
-        try:
-            response.raise_for_status()
-            #print(response.status_code, response.reason)
-        except requests.exceptions.HTTPError as e:
-            return "Event Error: " + str(e)
-
-
-        if file_flight_log is None:
-            path = '{0}/Desktop/flight-log-{1}.json'.format(os.getenv('HOME'), log_time_string)
-            file_flight_log = open(path, 'a+')
-        file_flight_log.write("{0}\n".format(str(json_to_file)))
+        # if file_flight_log is None:
+        #     path = '{0}/Desktop/flight-log-{1}.json'.format(os.getenv('HOME'), log_time_string)
+        #     file_flight_log = open(path, 'a+')
+        # file_flight_log.write("{0}\n".format(str(json_to_file)))
     elif event is drone.EVENT_LOG_DATA:
         log_data = data
+        post_url = 'http://localhost:8080/sebulba/position'
         log_to_json = json.loads(data.format_json())
         json_to_file = json.dumps(log_to_json)
 
-        response = requests.post('http://localhost:8080/sebulba/position', headers=curl_headers, data=json_to_file)
+        #asyncio.run(post_data(json=json_to_file))
 
-        try:
-            response.raise_for_status()
-        except requests.exceptions.HTTPError as e:
-            return "POS Error: " + str(e)
-
-        if file_event_log is None:
-            path = '{0}/Desktop/pos-log-{1}.json'.format(os.getenv('HOME'), log_time_string)
-            file_event_log = open(path, 'a+')
-
-        file_event_log.write("{0}\n".format(str(json_to_file)))
+        # if file_event_log is None:
+        #     path = '{0}/Desktop/pos-log-{1}.json'.format(os.getenv('HOME'), log_time_string)
+        #     file_event_log = open(path, 'a+')
+        #
+        # file_event_log.write("{0}\n".format(str(json_to_file)))
 
         if file_event_log_csv is None:
             path = '{0}/Desktop/pos-log-{1}.csv'.format(os.getenv('HOME'), log_time_string)
@@ -374,41 +386,41 @@ def draw_text(image, text, row):
         cv2.putText(image, text, pos, font, font_scale, bg_color, 6)
         cv2.putText(image, text, pos, font, font_scale, font_color, 1)
 
-def recv_thread(drone):
-    global run_recv_thread
-    global new_image
-    global flight_data
-    global log_data
-
-    print('start recv_thread()')
-    try:
-        container = av.open(drone.get_video_stream())
-        # skip first 300 frames
-        frame_skip = 300
-        while True:
-            for frame in container.decode(video=0):
-                if 0 < frame_skip:
-                    frame_skip = frame_skip - 1
-                    continue
-                start_time = time.time()
-                image = cv2.cvtColor(numpy.array(frame.to_image()), cv2.COLOR_RGB2BGR)
-
-                if flight_data:
-                    draw_text(image, 'TelloPy: joystick_and_video ' + str(flight_data), 0)
-                if log_data:
-                    draw_text(image, 'MVO: ' + str(log_data.mvo), -3)
-                    draw_text(image, ('IMU: ' + str(log_data.imu))[0:52], -2)
-                    draw_text(image, '     ' + ('IMU: ' + str(log_data.imu))[52:], -1)
-                new_image = image
-                if frame.time_base < 1.0/60:
-                    time_base = 1.0/60
-                else:
-                    time_base = frame.time_base
-                frame_skip = int((time.time() - start_time)/time_base)
-    except Exception as ex:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        traceback.print_exception(exc_type, exc_value, exc_traceback)
-        print(ex)
+# def recv_thread(drone):
+#     global run_recv_thread
+#     global new_image
+#     global flight_data
+#     global log_data
+#
+#     print('start recv_thread()')
+#     try:
+#         container = av.open(drone.get_video_stream())
+#         # skip first 300 frames
+#         frame_skip = 300
+#         while True:
+#             for frame in container.decode(video=0):
+#                 if 0 < frame_skip:
+#                     frame_skip = frame_skip - 1
+#                     continue
+#                 start_time = time.time()
+#                 image = cv2.cvtColor(numpy.array(frame.to_image()), cv2.COLOR_RGB2BGR)
+#
+#                 if flight_data:
+#                     draw_text(image, 'TelloPy: joystick_and_video ' + str(flight_data), 0)
+#                 if log_data:
+#                     draw_text(image, 'MVO: ' + str(log_data.mvo), -3)
+#                     draw_text(image, ('IMU: ' + str(log_data.imu))[0:52], -2)
+#                     draw_text(image, '     ' + ('IMU: ' + str(log_data.imu))[52:], -1)
+#                 new_image = image
+#                 if frame.time_base < 1.0/60:
+#                     time_base = 1.0/60
+#                 else:
+#                     time_base = frame.time_base
+#                 frame_skip = int((time.time() - start_time)/time_base)
+#     except Exception as ex:
+#         exc_type, exc_value, exc_traceback = sys.exc_info()
+#         traceback.print_exception(exc_type, exc_value, exc_traceback)
+#         print(ex)
 
 def main():
     global buttons
@@ -438,13 +450,14 @@ def main():
 
     if buttons is None:
         print('no supported joystick found')
-        return
+    else:
+        print("Connected with:" + str(buttons))
 
     drone = tellopy.Tello()
     drone.connect()
     drone.subscribe(drone.EVENT_FLIGHT_DATA, handler)
     drone.subscribe(drone.EVENT_LOG_DATA, handler)
-    threading.Thread(target=recv_thread, args=[drone]).start()
+    #threading.Thread(target=recv_thread, args=[drone]).start()
 
     try:
         while 1:
