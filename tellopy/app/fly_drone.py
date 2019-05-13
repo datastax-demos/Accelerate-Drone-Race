@@ -28,6 +28,7 @@ import csv
 import requests_async as requests
 import asyncio
 #import aiohttp
+from requests_futures.sessions import FuturesSession
 
 class JoystickPS3:
     # d-pad
@@ -196,6 +197,7 @@ write_header = True
 post_url = None
 #buttons = JoystickPS4
 buttons = None
+http_session = None
 speed = 100
 throttle = 0.0
 yaw = 0.0
@@ -210,22 +212,9 @@ curl_headers = {
 # httpsession = aiohttp.ClientSession()
 # loop = asyncio.get_event_loop()
 
-async def post_data(json_data):
+def response_hook(response, *args, **kwargs):
 
-   # resp = await httpsession.put(post_url, json=json_data)
-   # try:
-   #     resp.raise_for_status()
-   # except aiohttp.ClientError as e:
-   #     return "Exception: " + str(e)
-
-    #response = await requests.post(post_url, headers=curl_headers, data=json_data, timeout=.01)
-   await requests.post(post_url, headers=curl_headers, data=json_data, timeout=.01)
-    # try:
-    #     response.status_code
-    # # print(response.status_code, response.reason)
-    # except requests.exceptions.HTTPError as e:
-    #     return "Error: " + str(e)
-
+    response.data = response.json()
 
 def handler(event, sender, data, **args):
     global prev_flight_data
@@ -237,6 +226,10 @@ def handler(event, sender, data, **args):
     global write_header
     global curl_headers
     global post_url
+    global http_session
+
+    future_flight = None
+    future_pos = None
 
     drone = sender
     if event is drone.EVENT_FLIGHT_DATA:
@@ -248,8 +241,7 @@ def handler(event, sender, data, **args):
         flight_to_json = json.loads(flight_data)
         json_to_file = json.dumps(flight_to_json)
 
-        #post_data(json_data=json_to_file)
-        asyncio.run(post_data(json_data=json_to_file))
+        future_flight = http_session.post(url=post_url, data=json_to_file, hooks={'response': response_hook,}, headers=curl_headers)
 
         # if file_flight_log is None:
         #     path = '{0}/Desktop/flight-log-{1}.json'.format(os.getenv('HOME'), log_time_string)
@@ -261,7 +253,7 @@ def handler(event, sender, data, **args):
         log_to_json = json.loads(data.format_json())
         json_to_file = json.dumps(log_to_json)
 
-        asyncio.run(post_data(json=json_to_file))
+        future_pos = http_session.post(url=post_url, data=json_to_file, hooks={'response': response_hook,}, headers=curl_headers)
 
         # if file_event_log is None:
         #     path = '{0}/Desktop/pos-log-{1}.json'.format(os.getenv('HOME'), log_time_string)
@@ -280,6 +272,13 @@ def handler(event, sender, data, **args):
 
     else:
         print('event="{0}" data={1}'.format(event.getname(), str(data)))
+
+    if future_flight is not None:
+        response_flight = future_flight.result()
+        print('flight log response: {0}'.format(response_flight.status_code))
+    if future_pos is not None:
+        response_pos = future_pos.result()
+        print('pos log response: {0}'.format(response_pos.status_code))
 
 
 
@@ -426,6 +425,7 @@ def main():
     global buttons
     global run_recv_thread
     global new_image
+    global http_session
     pygame.init()
     pygame.joystick.init()
     current_image = None
@@ -453,6 +453,7 @@ def main():
     else:
         print("Connected with:" + str(buttons))
 
+    http_session = FuturesSession()
     drone = tellopy.Tello()
     drone.connect()
     drone.subscribe(drone.EVENT_FLIGHT_DATA, handler)

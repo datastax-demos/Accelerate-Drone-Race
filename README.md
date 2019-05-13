@@ -35,6 +35,7 @@ $ pip install opencv-python
 $ pip install image
 $ pip install pygame
 $ pip install requests
+$ pip install requests-futures
 
 ```
 
