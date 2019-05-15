@@ -204,7 +204,11 @@ curl_headers = {
 
 def response_hook(response, *args, **kwargs):
 
-    response.data = response.json()
+    try:
+        response.data = response.json()
+    except Exception as e:
+        print(e)
+
 
 def handler(event, sender, data, **args):
     global prev_flight_data
@@ -231,7 +235,9 @@ def handler(event, sender, data, **args):
         flight_to_json = json.loads(flight_data)
         json_to_file = json.dumps(flight_to_json)
 
+
         future_flight = http_session.post(url=post_url, data=json_to_file, hooks={'response': response_hook,}, headers=curl_headers)
+
 
     elif event is drone.EVENT_LOG_DATA:
         log_data = data
@@ -253,12 +259,15 @@ def handler(event, sender, data, **args):
     else:
         print('event="{0}" data={1}'.format(event.getname(), str(data)))
 
-    if future_flight is not None:
-        response_flight = future_flight.result()
-        print('flight log response: {0}'.format(response_flight.status_code))
-    if future_pos is not None:
-        response_pos = future_pos.result()
-        print('pos log response: {0}'.format(response_pos.status_code))
+    try:
+        if future_flight is not None:
+            response_flight = future_flight.result()
+            print('flight log response: {0}'.format(response_flight.status_code))
+        if future_pos is not None:
+            response_pos = future_pos.result()
+            print('pos log response: {0}'.format(response_pos.status_code))
+    except Exception as e:
+        print(e)
 
 
 
