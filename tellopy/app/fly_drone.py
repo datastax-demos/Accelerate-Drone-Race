@@ -17,6 +17,10 @@ import traceback
 import json
 from requests_futures.sessions import FuturesSession
 
+print (os.getcwd())
+for i in sys.path:
+    print(i)
+
 class JoystickPS3:
     # d-pad
     UP = 4  # UP
