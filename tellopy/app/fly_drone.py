@@ -28,7 +28,7 @@ class JoystickPS3:
     TAKEOFF = 11  # R1
     LAND = 10  # L1
     # UNUSED = 9 #R2
-    # UNUSED = 8 #L2
+    FLIP = 8 #L2
 
     # buttons
     FORWARD = 12  # TRIANGLE
@@ -59,7 +59,7 @@ class JoystickPS4:
     TAKEOFF = 5  # R1
     LAND = 4  # L1
     # UNUSED = 7 #R2
-    # UNUSED = 6 #L2
+    FLIP = 11 #right stick press
 
     # buttons
     FORWARD = 3  # TRIANGLE
@@ -89,7 +89,7 @@ class JoystickPS4ALT:
     # bumper triggers
     TAKEOFF = 5  # R1
     LAND = 4  # L1
-    # UNUSED = 7 #R2
+    FLIP = 11 #right stick press
     # UNUSED = 6 #L2
 
     # buttons
@@ -152,7 +152,7 @@ class JoystickTARANIS:
     TAKEOFF = 12  # left switch
     LAND = 12  # left switch
     # UNUSED = 7 #RT
-    # UNUSED = 6 #LT
+    FLIP = 6 #LT
 
     # buttons
     FORWARD = -1
@@ -331,6 +331,8 @@ def handle_input_event(drone, e):
             drone.right(speed)
         elif e.button == buttons.LEFT:
             drone.left(speed)
+        elif e.button == buttons.FLIP:
+            drone.flip_back()
     elif e.type == pygame.locals.JOYBUTTONUP:
         if e.button == buttons.TAKEOFF:
             if throttle != 0.0:
@@ -354,6 +356,7 @@ def handle_input_event(drone, e):
             drone.right(0)
         elif e.button == buttons.LEFT:
             drone.left(0)
+
 
 # def draw_text(image, text, row):
 #         font = cv2.FONT_HERSHEY_SIMPLEX
