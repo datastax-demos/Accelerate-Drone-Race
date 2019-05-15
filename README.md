@@ -1,76 +1,55 @@
-# DJI Tello Drone Race Project for DataStax Accelerate
+# Drone Race Project for DataStax Accelerate
 
-This is a python package which controlls DJI toy drone 'Tello'. The major portion of the source
-code was ported from the driver of GOBOT project. For original golang version and protocol in
+This is a python package which controls the DJI 'Tello' drone. The major portion of the source
+code was ported from the driver of GOBOT project. See the original golang version and protocol in
 detail, please refer their blog post at
 https://gobot.io/blog/2018/04/20/hello-tello-hacking-drones-with-go
 
-Original project by Hanyazou <hanyazou@gmail>
+Much of the core of this project comes from: https://github.com/hanyazou/TelloPy
 
 
-##What currently works
-- Controls
-- Video
-- Real-time telemetry 
-- Logging
 
-##TODO for Accelerate
-- DSE Service
-- Authentication/User tracking
-- Leaderboards 
-
-![photo](files/tello-and-gamepad.png)
+![photo](files/da-mascot.png)
 
 ## How to install
-You can install stable version from PyPI.
 
-Any Xbox One controller (possibly 360) should work here
+NOTE: Xbox controllers will not work on recent versions of MacOS, even with 3rd party drivers. 
+
+For DataStax Accelerate, we are not using the video streaming functionality. It's in the code, commented out. Install just what's needed for Accelerate:
 
 ```
-Install this xbox360 mac driver: https://github.com/360Controller/360Controller/releases/download/v0.16.11/360ControllerInstall_0.16.11.dmg
+$ pip install -r requirements.txt
+```
+
+If you'd like to mess around with video, you'll need to install the following:
+
+
+```
 $ brew install ffmpeg pkg-config
 $ pip install tellopy
 $ pip install av
 $ pip install opencv-python
 $ pip install image
-$ pip install pygame
-$ pip install requests
-$ pip install requests-futures
-
 ```
 
-## Documents
-Please see the API docstring.
-```
-$ python
->>> import tellopy
->>> help(tellopy)
-Help on package tellopy:
-...
-```
+## How to start the app
 
-## Examples
+First, you'll want to run: `$ ./start-drone-app.sh`
 
-You can find basic usage of this package in example code in the examples folder.
+This will start the Python application that controls the drone and sends telemetry data to the UI
 
-### simple_takeoff
-This example let Tello take off. Tello will land automatically after a few seconds.
+Then, you'll want to turn on your Tello Drone and connect to its WiFi
 
-```
-$ python -m tellopy.examples.simple_takeoff
-```
+![photo](files/tello-wifi.png)
 
-![photo](files/joystick_and_video.png)
+Once you're connected, you're ready to take off! 
 
-## Tellopy side projects
 
-### Hand_motion Tello controller
+## Controls
 
-You can find a hand_motion controller for the Tello in this project: https://github.com/GalBrandwine/HalloPy,
-and controll your tello using hand movements!
+See image below for controls 
 
-###  OpenCV based Tello controller
+![photo](files/controls.jpeg)
+ 
 
-This interfaces with the drone through openCV and generates frames from the video stream for computer vision applications. It comes with a tracker that will detect a color in the scene and follow it:
-https://github.com/Ubotica/telloCV/
  

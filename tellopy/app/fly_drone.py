@@ -7,14 +7,12 @@ tellopy sample using joystick and video palyer
     get it here -> https://github.com/360Controller/360Controller'''
 """
 
-import time
 import datetime
 import os
 import sys
 import tellopy
 import pygame
 import pygame.locals
-from subprocess import Popen, PIPE
 import threading
 import av
 import cv2.cv2 as cv2  # for avoidance of pylint error
@@ -22,12 +20,6 @@ import numpy
 import time
 import traceback
 import json
-import io
-import csv
-#import requests
-import requests_async as requests
-import asyncio
-#import aiohttp
 from requests_futures.sessions import FuturesSession
 
 class JoystickPS3:
@@ -186,7 +178,7 @@ class JoystickTARANIS:
 
 
 prev_flight_data = None
-run_recv_thread = True
+#run_recv_thread = True
 new_image = None
 flight_data = None
 log_data = None
@@ -195,7 +187,6 @@ file_flight_log = None
 file_event_log_csv = None
 write_header = True
 post_url = None
-#buttons = JoystickPS4
 buttons = None
 http_session = None
 speed = 100
@@ -209,8 +200,7 @@ curl_headers = {
     'Content-Type': 'application/json',
 }
 
-# httpsession = aiohttp.ClientSession()
-# loop = asyncio.get_event_loop()
+
 
 def response_hook(response, *args, **kwargs):
 
@@ -243,10 +233,6 @@ def handler(event, sender, data, **args):
 
         future_flight = http_session.post(url=post_url, data=json_to_file, hooks={'response': response_hook,}, headers=curl_headers)
 
-        # if file_flight_log is None:
-        #     path = '{0}/Desktop/flight-log-{1}.json'.format(os.getenv('HOME'), log_time_string)
-        #     file_flight_log = open(path, 'a+')
-        # file_flight_log.write("{0}\n".format(str(json_to_file)))
     elif event is drone.EVENT_LOG_DATA:
         log_data = data
         post_url = 'http://localhost:8080/sebulba/position'
@@ -254,12 +240,6 @@ def handler(event, sender, data, **args):
         json_to_file = json.dumps(log_to_json)
 
         future_pos = http_session.post(url=post_url, data=json_to_file, hooks={'response': response_hook,}, headers=curl_headers)
-
-        # if file_event_log is None:
-        #     path = '{0}/Desktop/pos-log-{1}.json'.format(os.getenv('HOME'), log_time_string)
-        #     file_event_log = open(path, 'a+')
-        #
-        # file_event_log.write("{0}\n".format(str(json_to_file)))
 
         if file_event_log_csv is None:
             path = '{0}/Desktop/pos-log-{1}.csv'.format(os.getenv('HOME'), log_time_string)
@@ -369,28 +349,29 @@ def handle_input_event(drone, e):
         elif e.button == buttons.LEFT:
             drone.left(0)
 
-def draw_text(image, text, row):
-        font = cv2.FONT_HERSHEY_SIMPLEX
-        font_scale = 0.5
-        font_size = 24
-        font_color = (255,255,255)
-        bg_color = (0,0,0)
-        d = 2
-        height, width = image.shape[:2]
-        left_mergin = 10
-        if row < 0:
-            pos =  (left_mergin, height + font_size * row + 1)
-        else:
-            pos =  (left_mergin, font_size * (row + 1))
-        cv2.putText(image, text, pos, font, font_scale, bg_color, 6)
-        cv2.putText(image, text, pos, font, font_scale, font_color, 1)
+# def draw_text(image, text, row):
+#         font = cv2.FONT_HERSHEY_SIMPLEX
+#         font_scale = 0.5
+#         font_size = 24
+#         font_color = (255,255,255)
+#         bg_color = (0,0,0)
+#         d = 2
+#         height, width = image.shape[:2]
+#         left_mergin = 10
+#         if row < 0:
+#             pos = (left_mergin, height + font_size * row + 1)
+#         else:
+#             pos = (left_mergin, font_size * (row + 1))
+#         cv2.putText(image, text, pos, font, font_scale, bg_color, 6)
+#         cv2.putText(image, text, pos, font, font_scale, font_color, 1)
 
 # def recv_thread(drone):
 #     global run_recv_thread
 #     global new_image
 #     global flight_data
 #     global log_data
-#
+#     #dsa_img = cv2.imread('../files/da-mascot.png')
+#     #dsa_resized = cv2.resize(dsa_img, (0,0), fx=0.5, fy=0.5)
 #     print('start recv_thread()')
 #     try:
 #         container = av.open(drone.get_video_stream())
@@ -403,13 +384,9 @@ def draw_text(image, text, row):
 #                     continue
 #                 start_time = time.time()
 #                 image = cv2.cvtColor(numpy.array(frame.to_image()), cv2.COLOR_RGB2BGR)
-#
+#                 #cv2.imshow(dsa_resized)
 #                 if flight_data:
-#                     draw_text(image, 'TelloPy: joystick_and_video ' + str(flight_data), 0)
-#                 if log_data:
-#                     draw_text(image, 'MVO: ' + str(log_data.mvo), -3)
-#                     draw_text(image, ('IMU: ' + str(log_data.imu))[0:52], -2)
-#                     draw_text(image, '     ' + ('IMU: ' + str(log_data.imu))[52:], -1)
+#                     draw_text(image, 'DataStax Accelerate\n' + str(flight_data), 0)
 #                 new_image = image
 #                 if frame.time_base < 1.0/60:
 #                     time_base = 1.0/60
@@ -420,6 +397,7 @@ def draw_text(image, text, row):
 #         exc_type, exc_value, exc_traceback = sys.exc_info()
 #         traceback.print_exception(exc_type, exc_value, exc_traceback)
 #         print(ex)
+
 
 def main():
     global buttons
@@ -458,6 +436,8 @@ def main():
     drone.connect()
     drone.subscribe(drone.EVENT_FLIGHT_DATA, handler)
     drone.subscribe(drone.EVENT_LOG_DATA, handler)
+
+    #disabling video as this makes controls unresponsive
     #threading.Thread(target=recv_thread, args=[drone]).start()
 
     try:
@@ -466,10 +446,10 @@ def main():
             time.sleep(0.01)
             for e in pygame.event.get():
                 handle_input_event(drone, e)
-            if current_image is not new_image:
-                cv2.imshow('Tello', new_image)
-                current_image = new_image
-                cv2.waitKey(1)
+            # if current_image is not new_image:
+            #     cv2.imshow('DataStax Accelerate Drone Race', new_image)
+            #     current_image = new_image
+            #     cv2.waitKey(1)
     except KeyboardInterrupt as e:
         print(e)
     except Exception as e:
@@ -477,8 +457,8 @@ def main():
         traceback.print_exception(exc_type, exc_value, exc_traceback)
         print(e)
 
-    run_recv_thread = False
-    cv2.destroyAllWindows()
+    #run_recv_thread = False
+    #cv2.destroyAllWindows()
     drone.quit()
     exit(1)
 

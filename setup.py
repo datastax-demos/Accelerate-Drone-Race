@@ -8,14 +8,14 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='tellopy',
+    name='Accelerate Drone Race',
 
-    version='0.7.0.dev0',
+    version='1.0',
 
     description='DJI Tello drone controller',
     url='https://github.com/hanyazou/TelloPy',
-    author='Hanyazou',
-    author_email='hanyazou@gmail.com',
+    author='marcinthecloud',
+    author_email='marc.selwan@datastax.com',
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4',
 
     classifiers=[
