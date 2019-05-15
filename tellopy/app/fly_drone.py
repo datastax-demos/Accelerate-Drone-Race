@@ -1,10 +1,5 @@
 """
-tellopy sample using joystick and video palyer
-
- - you can use PS3/PS4/XONE joystick to controll DJI Tello with tellopy module
- - you must install mplayer to replay the video
- - Xbox One Controllers were only tested on Mac OS with the 360Controller Driver.
-    get it here -> https://github.com/360Controller/360Controller'''
+DataStax Drone Race App
 """
 
 import datetime
@@ -262,10 +257,12 @@ def handler(event, sender, data, **args):
     try:
         if future_flight is not None:
             response_flight = future_flight.result()
-            print('flight log response: {0}'.format(response_flight.status_code))
+            if response_flight.status_code != 200:
+                print('flight log response: {0}'.format(response_flight.status_code))
         if future_pos is not None:
             response_pos = future_pos.result()
-            print('pos log response: {0}'.format(response_pos.status_code))
+            if response_pos.status_code != 200:
+                print('pos log response: {0}'.format(response_pos.status_code))
     except Exception as e:
         print(e)
 
