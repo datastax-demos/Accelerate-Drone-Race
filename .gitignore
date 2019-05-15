@@ -7,3 +7,4 @@
 *.iws
 
 *.py[co]
+.DS_Store
