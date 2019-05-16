@@ -26,7 +26,7 @@ General hardware/software requirements:
 -Controller: Any controller* should be plug and play. If you want to check to see if your controller is supported, run examples/controller_check.py
 (For Accelerate, we'll be using PS4 controllers) 
 
--Python > 3.6
+-Python 3.6+
 -Java 8.latest (Maven is required for Sebulba) 
 
 -Works on Mac, Linux, or Windows**. 
