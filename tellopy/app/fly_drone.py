@@ -8,10 +8,10 @@ import sys
 import tellopy
 import pygame
 import pygame.locals
-import threading
-import av
-import cv2.cv2 as cv2  # for avoidance of pylint error
-import numpy
+#import threading
+#import av
+#import cv2.cv2 as cv2  # for avoidance of pylint error
+#import numpy
 import time
 import traceback
 import json
